@@ -2,6 +2,7 @@ package com.example.cancellation_feature_seats_booking_app.presentaion;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,9 @@ import com.example.cancellation_feature_seats_booking_app.domain.BookingModel;
 import com.example.cancellation_feature_seats_booking_app.domain.HistoryResponseModel;
 import com.example.cancellation_feature_seats_booking_app.presentaion.adapters.history_adapter;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import androidx.lifecycle.ViewModelProvider;
@@ -59,7 +63,14 @@ public class HistoryActivity extends AppCompatActivity {
                         ProgressBar progressBar = findViewById(R.id.progressBarHistory);
                         progressBar.setVisibility(View.GONE);
                     }
-                    adapter.setList(historyResponseModel.getData());
+                    List<BookingModel>adapterList=new ArrayList<>();
+                    for (int i = 0; i < historyResponseModel.getData().size(); i++) {
+                        if(isDateValid(historyResponseModel.getData().get(i).getTrip_start_date())){
+                            adapterList.add(historyResponseModel.getData().get(i));
+                            Log.d("TAG", "onChanged: "+historyResponseModel.getData().get(i).getTrip_start_date());
+                        }
+                    }
+                    adapter.setList(adapterList);
                 }
                 else {
                     TextView noData = findViewById(R.id.tv_noHistory);
@@ -105,5 +116,21 @@ public class HistoryActivity extends AppCompatActivity {
         );
         layoutParams.gravity = Gravity.CENTER;
         toolbar.addView(toolbarTitle, layoutParams);
+    }
+
+    boolean isDateValid(String dateString){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+
+        try {
+            LocalDate dateToCompare = LocalDate.parse(dateString, formatter);
+            LocalDate currentDate = LocalDate.now();
+            if (dateToCompare.isBefore(currentDate) || dateToCompare.isEqual(currentDate)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 }
