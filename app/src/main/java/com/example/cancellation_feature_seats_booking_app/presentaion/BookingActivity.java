@@ -120,33 +120,14 @@ public class BookingActivity extends AppCompatActivity {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
 
         try {
-            Log.d("TAG", "1: ");
-            // Parse the date string into a LocalDate object
             LocalDate dateToCompare = LocalDate.parse(dateString, formatter);
-            Log.d("TAG", "2: ");
-
-            // Get the current date
             LocalDate currentDate = LocalDate.now();
-            Log.d("TAG", "3: ");
-            Log.d("TAG", "11: "+dateToCompare.toString());
-            Log.d("TAG", "12: "+currentDate.toString());
-
-
-            // Compare the dates
-            if (dateToCompare.isAfter(currentDate)) {
-                Log.d("TAG", "4: ");
-
-                // The date is upcoming
-                return true;
-                // Perform your action here
+           if (dateToCompare.isAfter(currentDate)) {
+               return true;
             } else {
-                Log.d("TAG", "5: ");
-
-                return false;
+               return false;
             }
         } catch (DateTimeParseException e) {
-            Log.d("TAG", "6: ");
-
             return false;
         }
     }
