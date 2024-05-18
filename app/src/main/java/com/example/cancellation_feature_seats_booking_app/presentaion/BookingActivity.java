@@ -1,6 +1,5 @@
 package com.example.cancellation_feature_seats_booking_app.presentaion;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
